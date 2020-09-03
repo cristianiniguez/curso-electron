@@ -4,13 +4,17 @@
   "description": "Aplicación de electron para visualización de imágenes",
   "main": "src/index.js",
   "scripts": {
-    "dev": "electron src/index.js",
+    "dev": "cross-env NODE_ENV=development electron src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "cristianiniguez <felizpc1@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "electron": "^10.1.1"
+    "cross-env": "^7.0.2",
+    "electron-compile": "^6.4.4"
+  },
+  "devDependencies": {
+    "electron-prebuilt-compile": "^8.2.0"
   }
 }
