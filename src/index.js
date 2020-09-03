@@ -32,4 +32,5 @@ app.on('ready', () => {
     app.quit()
   })
   win.loadURL(`file://${__dirname}/renderer/index.html`)
+  // win.toggleDevTools()
 })
