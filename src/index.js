@@ -26,5 +26,5 @@ app.on('ready', () => {
     win = null
     app.quit()
   })
-  win.loadURL('https://devdocs.io')
+  win.loadURL(`file://${__dirname}/renderer/index.html`)
 })
