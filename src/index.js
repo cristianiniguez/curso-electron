@@ -2,6 +2,7 @@
 
 import { app, BrowserWindow, ipcMain, dialog } from 'electron'
 import devtools from './devtools'
+import handleErrors from './handle-errors'
 import fs from 'fs'
 import isImage from 'is-image'
 import fileSize from 'filesize'
@@ -29,6 +30,7 @@ app.on('ready', () => {
       nodeIntegration: true
     }
   })
+  handleErrors(win)
   win.once('ready-to-show', () => {
     win.show()
   })
