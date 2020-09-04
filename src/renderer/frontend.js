@@ -1,12 +1,22 @@
 import url from 'url'
 import path from 'path'
 import applyFilter from './filters'
+import { setIpc, sendIpc } from './ipcRendererEvents'
 
 window.addEventListener('load', () => {
+  setIpc()
   addImageEvent()
   searchImagesEvent()
   selectEvent()
+  openDirectory()
 })
+
+function openDirectory() {
+  const openDirectory = document.getElementById('open-directory')
+  openDirectory.addEventListener('click', () => {
+    sendIpc()
+  })
+}
 
 function addImageEvent() {
   const thumbs = document.querySelectorAll('li.list-group-item')

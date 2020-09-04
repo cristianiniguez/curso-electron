@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, ipcMain } from 'electron'
 import devtools from './devtools'
 
 if (process.env.NODE_ENV === 'development') {
@@ -36,4 +36,9 @@ app.on('ready', () => {
   })
   win.loadURL(`file://${__dirname}/renderer/index.html`)
   // win.toggleDevTools()
+})
+
+ipcMain.on('ping', (event, arg) => {
+  console.log(`Se recibió un ping: ${arg}`)
+  event.sender.send('pong', new Date())
 })
