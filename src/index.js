@@ -1,7 +1,9 @@
 'use strict'
 
-import { app, BrowserWindow, ipcMain } from 'electron'
+import { app, BrowserWindow, ipcMain, dialog } from 'electron'
 import devtools from './devtools'
+
+let win
 
 if (process.env.NODE_ENV === 'development') {
   devtools()
@@ -12,7 +14,7 @@ app.on('before-quit', () => {
 })
 
 app.on('ready', () => {
-  let win = new BrowserWindow({
+  win = new BrowserWindow({
     width: 800,
     height: 600,
     title: 'Hola Mundo',
@@ -38,7 +40,13 @@ app.on('ready', () => {
   // win.toggleDevTools()
 })
 
-ipcMain.on('ping', (event, arg) => {
-  console.log(`Se recibió un ping: ${arg}`)
-  event.sender.send('pong', new Date())
+ipcMain.on('open-directory', event => {
+  dialog.showOpenDialog(win, {
+    title: 'Seleccione la nueva ubicación',
+    buttonLabel: 'Abrir ubicación',
+    properties: ['openDirectory']
+  })
+  .then(dir => {
+    console.log(dir)
+  })
 })
