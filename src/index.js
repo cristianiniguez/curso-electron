@@ -54,6 +54,9 @@ ipcMain.on('open-directory', event => {
       const images = []
       if (dir) {
         fs.readdir(dir.filePaths[0], (err, files) => {
+          if (err) {
+            throw err
+          }
           for (let i = 0; i < files.length; i++) {
             if (isImage(files[i])) {
               let imageFile = path.join(dir.filePaths[0], files[i])
@@ -66,7 +69,7 @@ ipcMain.on('open-directory', event => {
               })
             }
           }
-          console.log(images)
+          event.sender.send('load-images', images)
         })
       }
     })
