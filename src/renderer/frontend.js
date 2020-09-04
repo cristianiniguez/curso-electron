@@ -1,9 +1,11 @@
 import url from 'url'
 import path from 'path'
+import applyFilter from './filters'
 
 window.addEventListener('load', () => {
   addImageEvent()
   searchImagesEvent()
+  selectEvent()
 })
 
 function addImageEvent() {
@@ -15,10 +17,21 @@ function addImageEvent() {
   }
 }
 
+function selectEvent() {
+  const select = document.getElementById('filters')
+  select.addEventListener('change', function () {
+    applyFilter(this.value, document.getElementById('image-displayed'))
+  })
+}
+
 function changeImage(node) {
-  document.querySelector('li.selected').classList.remove('selected')
-  node.classList.add('selected')
-  document.getElementById('image-displayed').src = node.querySelector('img').src
+  if (node) {
+    document.querySelector('li.selected').classList.remove('selected')
+    node.classList.add('selected')
+    document.getElementById('image-displayed').src = node.querySelector('img').src
+  } else {
+    document.getElementById('image-displayed').src = ''
+  }
 }
 
 function searchImagesEvent() {
@@ -37,6 +50,11 @@ function searchImagesEvent() {
         }
       }
       selectFirstImage()
+    } else {
+      const hidden = document.querySelectorAll('li.hidden')
+      for (let i = 0; i < hidden.length; i++) {
+        hidden[i].classList.remove('hidden')
+      }
     }
   })
 }
