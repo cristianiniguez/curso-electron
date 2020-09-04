@@ -61,7 +61,7 @@ ipcMain.on('open-directory', event => {
             if (isImage(files[i])) {
               let imageFile = path.join(dir.filePaths[0], files[i])
               let stats = fs.statSync(imageFile)
-              let size = fileSize(stats.size, {round: 0})
+              let size = fileSize(stats.size, { round: 0 })
               images.push({
                 filename: files[i],
                 src: `file://${imageFile}`,
@@ -71,6 +71,20 @@ ipcMain.on('open-directory', event => {
           }
           event.sender.send('load-images', images)
         })
+      }
+    })
+})
+
+ipcMain.on('open-save-dialog', (event, ext) => {
+  console.log(ext.substr(1))
+  dialog.showSaveDialog(win, {
+    title: 'Guardar imagen modificada',
+    buttonLabel: 'Guardar imagen',
+    filters: [{ name: 'Images', extensions: [ext.substr(1)] }]
+  })
+    .then(res => {
+      if (res) {
+        event.sender.send('save-image', res.filePath)
       }
     })
 })
