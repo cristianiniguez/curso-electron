@@ -1,4 +1,4 @@
-import fs from 'fs'
+import fs from 'fs-extra'
 
 function applyFilter(filter, currentImage) {
   let imgObj = new Image();
@@ -10,8 +10,15 @@ function applyFilter(filter, currentImage) {
 
 function saveImage(fileName, callback) {
   let fileSrc = document.getElementById('image-displayed').src
-  fileSrc = fileSrc.replace(/^data:([A-Za-z-+/]+);base64,/, '')
-  fs.writeFile(fileName, fileSrc, 'base64', callback)
+  if (fileSrc.indexOf(';base64,') !== -1) {
+    fileSrc = fileSrc.replace(/^data:([A-Za-z-+/]+);base64,/, '')
+    fs.writeFile(fileName, fileSrc, 'base64', callback)
+  } else {
+    console.log(fileSrc)
+    fileSrc = unescape(fileSrc).replace('file:///', '')
+    console.log(fileSrc)
+    fs.copy(fileSrc, fileName, callback)
+  }
 }
 
 module.exports = {
