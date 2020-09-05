@@ -1,4 +1,4 @@
-import { ipcRenderer, remote } from 'electron'
+import { ipcRenderer, remote, clipboard } from 'electron'
 import settings from 'electron-settings'
 import { addImagesEvent, clearImages, loadImages, selectFirstImage } from './images-ui'
 import { saveImage } from './filters'
@@ -105,11 +105,24 @@ function uploadImage() {
         showDialog('error', 'Platzipics', 'Verifique su conexión o sus credenciales de cloudup')
         console.error(err)
       } else {
-        showDialog('info', 'Platzipics', `Imagen cargada con éxito - ${stream.url}`)
+        clipboard.writeText(stream.url)
+        showDialog('info', 'Platzipics', `Imagen cargada con éxito - ${stream.url} - Enlace copiado en el portapapeles`)
       }
     })
   } else {
     showDialog('error', 'Platzipics', 'Por favor complete las preferencias de cloudup')
+  }
+}
+
+function pasteImage() {
+  const image = clipboard.readImage()
+  const data = image.toDataURL()
+  if (data.indexOf('data:image/png;base64') !== -1 && !image.isEmpty()) {
+    let mainImage = document.getElementById('image-displayed')
+    mainImage.src = data
+    mainImage.dataset.original = data
+  } else {
+    showDialog('error', 'Platzipics', 'No hay imagen válida en el portapapeles')
   }
 }
 
@@ -118,5 +131,6 @@ module.exports = {
   openDirectory: openDirectory,
   saveFile: saveFile,
   openPreferences: openPreferences,
-  uploadImage: uploadImage
+  uploadImage: uploadImage,
+  pasteImage: pasteImage
 }
