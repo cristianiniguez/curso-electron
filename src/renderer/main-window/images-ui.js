@@ -87,6 +87,10 @@ function loadImages(images) {
   }
 }
 
+function print() {
+  window.print()
+}
+
 module.exports = {
   addImagesEvent: addImagesEvent,
   changeImage: changeImage,
@@ -95,4 +99,5 @@ module.exports = {
   searchImagesEvent: searchImagesEvent,
   clearImages: clearImages,
   loadImages: loadImages,
+  print: print
 }
