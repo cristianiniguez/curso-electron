@@ -14,7 +14,8 @@ function setIpc() {
     loadImages(images)
     addImagesEvent()
     selectFirstImage()
-    settings.set('directory', dir)
+    settings.setSync('directory', dir)
+    document.getElementById('directory').innerHTML = dir
   })
   ipcRenderer.on('save-image', (event, file) => {
     saveImage(file, (err) => {
@@ -65,7 +66,7 @@ function saveFile() {
 function showDialog(type, title, msg) {
   ipcRenderer.send('show-dialog', {
     type: type,
-    title, title,
+    title: title,
     message: msg
   })
 }
