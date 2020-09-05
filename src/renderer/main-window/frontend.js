@@ -1,5 +1,5 @@
-import { setIpc, openDirectory, saveFile, openPreferences } from './ipcRendererEvents'
-import { addImagesEvent, searchImagesEvent, selectEvent } from './images-ui'
+import { setIpc, openDirectory, saveFile, openPreferences } from './main-window/ipcRendererEvents'
+import { addImagesEvent, searchImagesEvent, selectEvent } from './main-window/images-ui'
 
 window.addEventListener('load', () => {
   setIpc()

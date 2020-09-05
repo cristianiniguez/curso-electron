@@ -5,7 +5,7 @@ import devtools from './devtools'
 import handleErrors from './handle-errors'
 import setMainIpc from './ipcMainEvents'
 
-let win
+global.win
 
 if (process.env.NODE_ENV === 'development') {
   devtools()
@@ -16,7 +16,7 @@ app.on('before-quit', () => {
 })
 
 app.on('ready', () => {
-  win = new BrowserWindow({
+  global.win = new BrowserWindow({
     width: 800,
     height: 600,
     title: 'Hola Mundo',
@@ -27,20 +27,20 @@ app.on('ready', () => {
       nodeIntegration: true
     }
   })
-  setMainIpc(win)
-  handleErrors(win)
-  win.once('ready-to-show', () => {
-    win.show()
+  setMainIpc(global.win)
+  handleErrors(global.win)
+  global.win.once('ready-to-show', () => {
+    global.win.show()
   })
-  win.on('move', () => {
-    const position = win.getPosition()
+  global.win.on('move', () => {
+    const position = global.win.getPosition()
     console.log(position)
   })
-  win.on('closed', () => {
-    win = null
+  global.win.on('closed', () => {
+    global.win = null
     app.quit()
   })
-  win.loadURL(`file://${__dirname}/renderer/index.html`)
+  global.win.loadURL(`file://${__dirname}/renderer/index.html`)
   // win.toggleDevTools()
 })
 

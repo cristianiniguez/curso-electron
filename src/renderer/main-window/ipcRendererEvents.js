@@ -23,16 +23,25 @@ function setIpc() {
 
 function openPreferences() {
   const BrowserWindow = remote.BrowserWindow
+  const mainWindow = remote.getGlobal('win')
   const preferencesWindow = new BrowserWindow({
     width: 400,
     height: 300,
     title: 'Preferencias',
     center: true,
     modal: true,
-    frame: true,
-    show: false
+    frame: false,
+    show: false,
+    webPreferences: {
+      nodeIntegration: true
+    }
   })
-  preferencesWindow.show()
+  // preferencesWindow.setParentWindow(mainWindow)
+  preferencesWindow.once('ready-to-show', () => {
+    preferencesWindow.show()
+    preferencesWindow.focus()
+  })
+  preferencesWindow.loadURL(`file://${path.join(__dirname, '..')}/preferences.html`)
 }
 
 function openDirectory() {
