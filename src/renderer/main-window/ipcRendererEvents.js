@@ -6,13 +6,15 @@ import path from 'path'
 import os from 'os'
 
 function setIpc() {
+  if (settings.hasSync('directory')) {
+    ipcRenderer.send('load-directory', settings.getSync('directory'))
+  }
   ipcRenderer.on('load-images', (event, dir, images) => {
     clearImages()
     loadImages(images)
     addImagesEvent()
     selectFirstImage()
     settings.set('directory', dir)
-    console.log(settings.file())
   })
   ipcRenderer.on('save-image', (event, file) => {
     saveImage(file, (err) => {

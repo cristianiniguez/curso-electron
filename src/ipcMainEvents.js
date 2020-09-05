@@ -12,28 +12,14 @@ function setMainIpc(win) {
       properties: ['openDirectory']
     })
       .then(dir => {
-        const images = []
         if (dir) {
-          fs.readdir(dir.filePaths[0], (err, files) => {
-            if (err) {
-              throw err
-            }
-            for (let i = 0; i < files.length; i++) {
-              if (isImage(files[i])) {
-                let imageFile = path.join(dir.filePaths[0], files[i])
-                let stats = fs.statSync(imageFile)
-                let size = fileSize(stats.size, { round: 0 })
-                images.push({
-                  filename: files[i],
-                  src: `file://${imageFile}`,
-                  size: size
-                })
-              }
-            }
-            event.sender.send('load-images', dir.filePaths[0], images)
-          })
+          loadImges(event, dir.filePaths[0])
         }
       })
+  })
+
+  ipcMain.on('load-directory', (event, dir) => {
+    loadImges(event, dir)
   })
 
   ipcMain.on('open-save-dialog', (event, ext) => {
@@ -56,6 +42,28 @@ function setMainIpc(win) {
       title: info.title,
       message: info.message
     })
+  })
+}
+
+function loadImges(event, dir) {
+  const images = []
+  fs.readdir(dir, (err, files) => {
+    if (err) {
+      throw err
+    }
+    for (let i = 0; i < files.length; i++) {
+      if (isImage(files[i])) {
+        let imageFile = path.join(dir, files[i])
+        let stats = fs.statSync(imageFile)
+        let size = fileSize(stats.size, { round: 0 })
+        images.push({
+          filename: files[i],
+          src: `file://${imageFile}`,
+          size: size
+        })
+      }
+    }
+    event.sender.send('load-images', dir, images)
   })
 }
 
