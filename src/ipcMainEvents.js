@@ -30,7 +30,7 @@ function setMainIpc(win) {
                 })
               }
             }
-            event.sender.send('load-images', images)
+            event.sender.send('load-images', dir.filePaths[0], images)
           })
         }
       })
