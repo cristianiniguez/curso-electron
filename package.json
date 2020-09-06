@@ -55,6 +55,7 @@
         "icon": "src/assets/icons/main-icon"
       },
       "electronWinstallerConfig": {
+        "appDirectory": "C:\\",
         "name": "platzipics"
       },
       "electronInstallerDebian": {},
