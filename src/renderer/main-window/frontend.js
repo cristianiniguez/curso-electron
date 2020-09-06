@@ -1,5 +1,6 @@
 import { setIpc, openDirectory, saveFile, openPreferences, uploadImage, pasteImage } from './main-window/ipcRendererEvents'
 import { addImagesEvent, searchImagesEvent, selectEvent, print } from './main-window/images-ui'
+import createMenu from './main-window/menu'
 
 window.addEventListener('load', () => {
   setIpc()
@@ -12,6 +13,7 @@ window.addEventListener('load', () => {
   buttonEvent('print-button', print)
   buttonEvent('upload-button', uploadImage)
   buttonEvent('paste-button', pasteImage)
+  createMenu()
 })
 
 function buttonEvent(id, func) {

@@ -11,9 +11,9 @@ function setMainIpc(win) {
       buttonLabel: 'Abrir ubicación',
       properties: ['openDirectory']
     })
-      .then(dir => {
-        if (dir) {
-          loadImges(event, dir.filePaths[0])
+      .then(res => {
+        if (!res.canceled) {
+          loadImges(event, res.filePaths[0])
         }
       })
   })
@@ -23,14 +23,13 @@ function setMainIpc(win) {
   })
 
   ipcMain.on('open-save-dialog', (event, ext) => {
-    console.log(ext.substr(1))
     dialog.showSaveDialog(win, {
       title: 'Guardar imagen modificada',
       buttonLabel: 'Guardar imagen',
       filters: [{ name: 'Images', extensions: [ext.substr(1)] }]
     })
       .then(res => {
-        if (res) {
+        if (!res.canceled) {
           event.sender.send('save-image', res.filePath)
         }
       })
