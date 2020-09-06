@@ -1,4 +1,4 @@
-import { ipcRenderer, remote, clipboard } from 'electron'
+import { ipcRenderer, remote, clipboard, shell } from 'electron'
 import settings from 'electron-settings'
 import { addImagesEvent, clearImages, loadImages, selectFirstImage } from './images-ui'
 import { saveImage } from './filters'
@@ -85,6 +85,7 @@ function uploadImage() {
   image = image.replace('file:///', '')
   let fileName = path.basename(image)
   if (settings.hasSync('cloudup.user') && settings.hasSync('cloudup.passwd')) {
+    document.getElementById('overlay').classList.toggle('hidden')
     let textParts = settings.getSync('cloudup.passwd').split(':')
     let iv = Buffer.from(textParts.shift(), 'hex')
     let encryptedText = Buffer.from(textParts.join(':'), 'hex')
@@ -101,11 +102,18 @@ function uploadImage() {
       title: `Platzipics - ${fileName}`
     })
     stream.file(image).save((err) => {
+      document.getElementById('overlay').classList.toggle('hidden')
       if (err) {
         showDialog('error', 'Platzipics', 'Verifique su conexión o sus credenciales de cloudup')
         console.error(err)
       } else {
-        clipboard.writeText(stream.url)
+        const notify = new Notification('Platzipics', {
+          body: `Imagen cargada con éxito\n${stream.url}\nclick para abrir la url`,
+          silent: false,
+        })
+        notify.onclick = () => {
+          shell.openExternal(stream.url)
+        }
         showDialog('info', 'Platzipics', `Imagen cargada con éxito - ${stream.url} - Enlace copiado en el portapapeles`)
       }
     })
