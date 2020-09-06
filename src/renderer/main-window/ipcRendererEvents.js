@@ -82,7 +82,7 @@ function uploadImage() {
   } else {
     image = imageNode.src
   }
-  image = image.replace('file:///', '')
+  image = image.replace('plp:///', '')
   let fileName = path.basename(image)
   if (settings.hasSync('cloudup.user') && settings.hasSync('cloudup.passwd')) {
     document.getElementById('overlay').classList.toggle('hidden')

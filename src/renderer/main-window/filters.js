@@ -15,7 +15,7 @@ function saveImage(fileName, callback) {
     fs.writeFile(fileName, fileSrc, 'base64', callback)
   } else {
     console.log(fileSrc)
-    fileSrc = unescape(fileSrc).replace('file:///', '')
+    fileSrc = unescape(fileSrc).replace('plp:///', '')
     console.log(fileSrc)
     fs.copy(fileSrc, fileName, callback)
   }
